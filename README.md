@@ -1,6 +1,6 @@
 # VINF
 
-VINF (Virtual INFinite space) is an experimental compression system that maps data into a multi-demensional graph instead of raw bytes.
+VINF (Virtual INFinite Space) is an experimental compression system that maps data into a multi-dimensional graph instead of raw bytes.
 
 Instead of storing files directly, VINF stores coordinates, dimensions and constraints that describe where the data exists in a virtual space. This allows us to compress files in terabytes into just a few bytes.
 
@@ -11,7 +11,7 @@ Traditional compression reduces file size by eliminating redundancy and encoding
 VINF takes a different approach:
 - Treats data as points in a virtual infinite space
 - Stores coordinates instead of raw data
-- Uses graph traversal for hyper fast decompression
+- Uses graph traversal for hyper-fast decompression
 - Encodes metadata (time, type, hash) as dimensions in the graph
 
 ## Core Concepts
@@ -31,7 +31,7 @@ vinf(u32:u33 < 12;34;56 < 103)
 - **Header Dimension**: file type (PNG, ZIP, EXE, etc.)
 - **Time Axis**: Creation/modification time
 - **Hash Dimension**: integrity verification
-- **Custom Dimensions**: user defined metadata (tags, categories)
+- **Custom Dimensions**: user-defined metadata (tags, categories)
 
 ### Compression
 
@@ -65,16 +65,16 @@ VINF stores:
 - Hashes
 
 Optional:
-- `vcoord` for ultra compressed coordinate only storage (sub byte size)
+- `vcoord` for ultra-compressed, coordinate-only storage (sub-byte size)
 
 ### Visualization
 
 VINF data can be visualized as a graph:
 - X/Y/Z is spatial position
-- Time axis by colour and animation
+- Time axis by color and animation
 - Header by file type classification
 
-Example: (will update these colours after its implementation)
+Example: (will update these colors after their implementation)
 - PNG chunks are blue
 - ZIP chunks are green
 - EXE sections are red
@@ -103,6 +103,14 @@ vinf decompress <vinf_file> - Decompress a VINF file back to original
 vinf visualize <vinf_file> - Visualize the VINF graph in a terminal
 vinf inspect <vinf_file> - Show metadata and dimensions of a VINF file
 
+## GUI
+
+A future GUI could allow users to:
+- Drag and drop files for compression
+- Browse VINF graphs visually
+- Search and filter by dimensions (e.g. find all PNGs created in 2023)
+- Export VINF data to other formats
+
 ## Inspiration
 
 VINF is inspired by:
@@ -110,7 +118,7 @@ VINF is inspired by:
 - Multi-dimensional maths
 - Procedural data generation
 - Compression algorithms
-- A random thought well i was chugging monster
+- A random thought while I was chugging Monster.
 
 ## License
 
@@ -122,8 +130,8 @@ See CONTRIBUTING.md (will be added later)
 
 ## Contact
 
-- Email: (gonna add this later)
-- Or just send me a message through github
+- Email: (I'll add this later)
+- Or just send me a message through GitHub
 
 ## Final Thoughts
 

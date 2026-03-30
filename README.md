@@ -120,6 +120,13 @@ VINF is inspired by:
 - Compression algorithms
 - A random thought while I was chugging Monster.
 
+## Algorithms:
+
+See:
+- `VINF-HASH.md` for the hashing algorithm
+- `VINF-COMPRESSION.md` for the compression algorithm
+- `VINF-DECOMPRESSION.md` for the decompression algorithm
+
 ## License
 
 TBD

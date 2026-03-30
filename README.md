@@ -142,5 +142,6 @@ See CONTRIBUTING.md (will be added later)
 
 ## Final Thoughts
 
-> What if data doesn't need to be stored as bytes?
-> Only located in a virtual graph space?
+> What if data doesn't need to be stored as bytes?  
+> Only located in a virtual graph space?  
+> This is the question VINF explores.

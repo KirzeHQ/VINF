@@ -50,6 +50,7 @@ Compression works by:
     - Time Axis
     - Partial hash matching
 3. Finding coordinates that represent the data
+4. Comparing hash and coordinates for validation
 
 ### Decompression
 

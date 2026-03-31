@@ -27,9 +27,8 @@ By contributing to this project, you agree that your contributions will be licen
 ## Contact
 
 If you have any questions or want to discuss your contributions, feel free to reach out to me through Github
-or by email!
-
-Email: seradedstripes@gmail.com
+or by email!  
+Email: [seradedstripes@gmail.com](mailto:seradedstripes@gmail.com)
 
 ## How to contribute
 
@@ -38,14 +37,15 @@ Email: seradedstripes@gmail.com
 3. Add tests and documentation for your changes. (if any)
 4. Commit your changes with a clear message.
 5. Open a PR with a description of your changes and how they fit into the project.
-6. Gimme (or anyone else with write access) like a day or two to review it and provide feedback.
+6. Give me (or anyone else with write access) a day or two to review it and provide feedback.
 7. Address any feedback and make necessary changes.
 8. Once it's approved, it will be merged into the main branch!
 
 ### PR not being reviewed?
 
-If your PR hasnt even been looked at after atleast a week, feel free to send me an email or message me on Github
-and ill try to get to it as soon as I can. Normally I should see it in like a day or two though.
+If your PR hasn't even been looked at after atleast a week, feel free to send me an email or message me on Github
+and ill try to get to it as soon as I can. Normally I or someone else should see it in a day or two though.  
+My Github: [SeradedStripes](https://github.com/SeradedStripes)
 
 ## Is there a spelling mistake or something small that needs to be fixed?
 

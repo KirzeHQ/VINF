@@ -66,6 +66,12 @@ VINF uses graph-based hashing:
 - Partial hash matching (X/Y/Z layer matching)
 - Used to validate coordinate correctness
 
+#### `.vhash` Format
+
+- Stores the hash in this file format
+- Organized to allow partial hash matching for efficient coordinate searching during compression
+- The hash itself is also compressed using VINF to minimize size, the hash does not have its own hash
+
 ### `.vinf` Format
 
 VINF stores:

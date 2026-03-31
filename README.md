@@ -130,6 +130,7 @@ VINF is inspired by:
 
 ## Algorithms:
 
+All of these are in docs/  
 See:
 - `VINF-HASH.md` for the hashing algorithm
 - `VINF-COMPRESSION.md` for the compression algorithm

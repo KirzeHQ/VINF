@@ -2,6 +2,12 @@ use crate::errors::Error;
 
 pub struct Vinf {}
 
+impl Default for Vinf {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Vinf {
   pub fn new() -> Self {
     Vinf {}

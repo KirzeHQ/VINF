@@ -1,0 +1,2 @@
+[workspace]
+members = ["vinf", "vinf-app"]

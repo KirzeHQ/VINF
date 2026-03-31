@@ -56,7 +56,6 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: 1.72.0
-          override: true
           components: clippy, rustfmt
           profile: minimal
 

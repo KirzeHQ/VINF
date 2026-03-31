@@ -46,3 +46,8 @@ Email: seradedstripes@gmail.com
 
 If your PR hasnt even been looked at after atleast a week, feel free to send me an email or message me on Github
 and ill try to get to it as soon as I can. Normally I should see it in like a day or two though.
+
+## Is there a spelling mistake or something small that needs to be fixed?
+
+Still make a PR! You would be suprised on how many typos are made in docs and code.
+Even if its a one character change, it can be a big difference in proffessionalism and readability.

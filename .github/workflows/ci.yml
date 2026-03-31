@@ -28,20 +28,21 @@ jobs:
               echo "Running Clippy for linting..."
               cargo clippy --all-targets --all-features -- -D warnings
 
-          - name: Run Unit Tests
-            run: |
-              echo "Running unit tests..."
-              cargo test --lib
+          # None yet
+          #- name: Run Unit Tests
+          #  run: |
+          #    echo "Running unit tests..."
+          #    cargo test --lib
 
-          - name: Run Integration Tests
-            run: |
-              echo "Running integration tests..."
-              cargo test --tests
+          #- name: Run Integration Tests
+          #  run: |
+          #    echo "Running integration tests..."
+          #    cargo test --tests
 
-          - name: Run Example Tests
-            run: |
-              echo "Running example tests..."
-              cargo test --examples
+          #- name: Run Example Tests
+          #  run: |
+          #    echo "Running example tests..."
+          #    cargo test --examples
       
     name: ${{ matrix.name }}
     steps:

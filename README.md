@@ -4,6 +4,14 @@ VINF (Virtual INFinite Space) is an experimental compression system that maps da
 
 Instead of storing files directly, VINF stores coordinates, dimensions and constraints that describe where the data exists in a virtual space. This allows us to compress files in terabytes into just a few bytes.
 
+## Repo Structure
+
+- `vinf/` - VINF library and core algorithms
+- `vinf-app/` - CLI and GUI applications for using VINF
+- `docs/` - Documentation and design notes
+- `examples/` - Example files and VINF outputs
+- `tests/` - Unit and integration tests
+
 ## What is VINF?
 
 Traditional compression reduces file size by eliminating redundancy and encoding data more efficiently.

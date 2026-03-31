@@ -167,11 +167,6 @@ TBD
 
 See CONTRIBUTING.md (will be added later)
 
-## Contact
-
-- Email: (I'll add this later)
-- Or just send me a message through GitHub
-
 ## Final Thoughts
 
 > What if data doesn't need to be stored as bytes?  

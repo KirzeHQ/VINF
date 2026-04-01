@@ -18,7 +18,7 @@ fn gen_round_constants() -> [[u64; 8]; R_P] {
   let mut rc = [[0u64; 8]; R_P];
   for r in 0..R_P {
     for i in 0..8 {
-      let mul = ((r as u128) * 0x9Fu128).wrapping_add(i as u128 + 1 );
+      let mul = ((r as u128) * 0x9Fu128).wrapping_add(i as u128 + 1);
       let v128 = RC_SEED.wrapping_mul(mul);
       let low64 = v128 as u64;
       let mut val = low64;
@@ -143,6 +143,12 @@ pub struct Graph {
   pub meta: Vec<u8>,
 }
 
+impl Default for Graph {
+  fn default() -> Self {
+    Self::new()
+  }
+}
+
 impl Graph {
   pub fn new() -> Self {
     Self {
@@ -179,10 +185,10 @@ pub fn build_vinf_hash(
       neighbors.sort_by_key(|e| (e.ty, e.to));
       let mut concat = Vec::new();
       for n in &neighbors {
-        if let Some(nei) = graph.nodes.iter().find(|x| x.id == n.to) {
-          if let Some(h) = nei.hashs.get(r) {
-            concat.extend_from_slice(h);
-          }
+        if let Some(nei) = graph.nodes.iter().find(|x| x.id == n.to)
+          && let Some(h) = nei.hashs.get(r)
+        {
+          concat.extend_from_slice(h);
         }
       }
       let mut mix_input = Vec::new();
@@ -325,7 +331,7 @@ fn layer_offsets() -> [usize; 4] {
   offs
 }
 
-pub fn get_layer_slice<'a>(hash: &'a [u8; NODE_DIGEST_BYTES], layer: Layer) -> &'a [u8] {
+pub fn get_layer_slice(hash: &[u8; NODE_DIGEST_BYTES], layer: Layer) -> &[u8] {
   let offs = layer_offsets();
   let start = offs[layer.idx()];
   let end = offs[layer.idx() + 1];
@@ -347,5 +353,5 @@ pub fn partial_match_up_to(
 ) -> bool {
   let offs = layer_offsets();
   let end = offs[layer.idx() + 1];
-  &a[..end] == &b[..end]
+  a[..end] == b[..end]
 }

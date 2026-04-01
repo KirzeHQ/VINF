@@ -19,7 +19,7 @@ mod tests {
 
   #[test]
   fn smoke() {
-    let v = Vinf::new();
+    let mut v = Vinf::new();
     let data = b"hello";
     let enc = v.compress(data).expect("compress should succeed");
     let dec = v.decompress(&enc).expect("decompress should succeed");

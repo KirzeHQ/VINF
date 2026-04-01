@@ -1,6 +1,9 @@
 use crate::errors::Error;
+use crate::hash::{basic_hash, NODE_DIGEST_BYTES};
 
-pub struct Vinf {}
+pub struct Vinf {
+  last_hash: Option<[u8; NODE_DIGEST_BYTES]>,
+}
 
 impl Default for Vinf {
   fn default() -> Self {
@@ -10,10 +13,20 @@ impl Default for Vinf {
 
 impl Vinf {
   pub fn new() -> Self {
-    Vinf {}
+    Vinf { last_hash: None }
   }
 
-  pub fn compress(&self, _data: &[u8]) -> Result<Vec<u8>, Error> {
+  pub fn last_hash(&self) -> Option<[u8; NODE_DIGEST_BYTES]> {
+    self.last_hash
+  }
+
+  pub fn compress(&mut self, data: &[u8]) -> Result<Vec<u8>, Error> {
+    
+    
+    let h = basic_hash(data);
+    self.last_hash = Some(h);
+
+    
     Ok(Vec::new())
   }
 
@@ -23,7 +36,8 @@ impl Vinf {
 }
 
 pub fn compress(data: &[u8]) -> Result<Vec<u8>, Error> {
-  Vinf::new().compress(data)
+  let mut v = Vinf::new();
+  v.compress(data)
 }
 
 pub fn decompress(vinf_bytes: &[u8]) -> Result<Vec<u8>, Error> {

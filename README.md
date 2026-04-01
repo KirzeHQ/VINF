@@ -1,4 +1,10 @@
-# VINF
+# VINF &middot;  ![Release Badge](https://shields.kirze.de/github/v/release/KirzeHQ/VINF?include_prereleases&color=247ba0)
+
+![Static Badge](https://shields.kirze.de/badge/language-rust-red)
+![GitHub License](https://shields.kirze.de/github/license/KirzeHQ/VINF?color=10B981)
+![GitHub Repo stars](https://shields.kirze.de/github/stars/KirzeHQ/VINF?style=flat&color=8B5CF6)
+![Crates.io Total Downloads](https://shields.kirze.de/crates/d/vinf)
+
 
 VINF (Virtual INFinite Space) is an experimental compression system that maps data into a multi-dimensional graph instead of raw bytes.
 

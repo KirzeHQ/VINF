@@ -18,7 +18,7 @@ fn gen_round_constants() -> [[u64; 8]; R_P] {
   let mut rc = [[0u64; 8]; R_P];
   for r in 0..R_P {
     for i in 0..8 {
-      let mul = ((r as u128) * 0x9Fu128).wrapping_add((i as u128 + 1));
+      let mul = ((r as u128) * 0x9Fu128).wrapping_add(i as u128 + 1 );
       let v128 = RC_SEED.wrapping_mul(mul);
       let low64 = v128 as u64;
       let mut val = low64;

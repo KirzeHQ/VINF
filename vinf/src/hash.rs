@@ -16,28 +16,28 @@ const RC_XOR_CONST: u64 = 0xC0FFEE1234567890u64;
 
 fn gen_round_constants() -> [[u64; 8]; R_P] {
   let mut rc = [[0u64; 8]; R_P];
-  for r in 0..R_P {
-    for i in 0..8 {
+  for (r, row) in rc.iter_mut().enumerate().take(R_P) {
+    for (i, cell) in row.iter_mut().enumerate().take(8) {
       let mul = ((r as u128) * 0x9Fu128).wrapping_add(i as u128 + 1);
       let v128 = RC_SEED.wrapping_mul(mul);
       let low64 = v128 as u64;
       let mut val = low64;
       val ^= RC_XOR_CONST.wrapping_add(((r as u64) << 8) | (i as u64));
-      rc[r][i] = val;
+      *cell = val;
     }
   }
   rc
 }
 
 pub fn vinf_p(state: &mut [u64; 8], rc: &[[u64; 8]; R_P]) {
-  for r in 0..R_P {
-    for i in 0..8 {
-      state[i] = state[i].wrapping_add(rc[r][i]);
+  for rc_row in rc.iter().take(R_P) {
+    for (i, &rc_val) in rc_row.iter().enumerate().take(8) {
+      state[i] = state[i].wrapping_add(rc_val);
     }
-    for i in 0..4 {
+    for (i, &rc_val) in rc_row.iter().enumerate().take(4) {
       let mut a = state[i];
       let mut b = state[i + 4];
-      a = a.wrapping_add(b).wrapping_add(rc[r][i]);
+      a = a.wrapping_add(b).wrapping_add(rc_val);
       b = (b ^ a).rotate_left(ROT[i]);
       state[i] = a;
       state[i + 4] = b;
@@ -46,8 +46,10 @@ pub fn vinf_p(state: &mut [u64; 8], rc: &[[u64; 8]; R_P]) {
       state[0], state[5], state[2], state[7], state[4], state[1], state[6], state[3],
     ];
     state.copy_from_slice(&s);
-    for i in 0..8 {
-      state[i] ^= state[(i + 3) % 8];
+    let state_copy = *state;
+    for (i, s_i) in state.iter_mut().enumerate().take(8) {
+      let j = (i + 3) % 8;
+      *s_i ^= state_copy[j];
     }
   }
 }
@@ -69,9 +71,8 @@ fn absorb(state: &mut [u64; 8], domain: u8, data: &[u8], rc: &[[u64; 8]; R_P]) {
     if end - pos < RATE_BYTES {
       block[end - pos] = 0x01;
     }
-    for i in 0..4 {
-      let off = i * 8;
-      let word = u64::from_le_bytes(block[off..off + 8].try_into().unwrap());
+    for (i, chunk) in block.chunks_exact(8).enumerate().take(4) {
+      let word = u64::from_le_bytes(chunk.try_into().unwrap());
       state[i] ^= word;
     }
     vinf_p(state, rc);
@@ -87,8 +88,8 @@ fn squeeze(
 ) -> io::Result<()> {
   let mut out = Vec::with_capacity(wanted);
   while out.len() < wanted {
-    for i in 0..4 {
-      out.extend_from_slice(&state[i].to_le_bytes());
+    for &w in state.iter().take(4) {
+      out.extend_from_slice(&w.to_le_bytes());
     }
     if out.len() >= wanted {
       break;

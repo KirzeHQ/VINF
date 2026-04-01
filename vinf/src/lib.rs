@@ -7,7 +7,8 @@ pub mod types;
 pub use crate::core::{Vinf, compress, decompress};
 pub use crate::errors::Error;
 pub use crate::hash::{
-  Graph as VinfGraph, NODE_DIGEST_BYTES, Node as VinfNode, basic_hash, build_vinf_hash, xof_bytes,
+  Graph as VinfGraph, LAYER_SIZES, Layer, NODE_DIGEST_BYTES, Node as VinfNode, basic_hash,
+  build_vinf_hash, get_layer_slice, partial_layer_match, partial_match_up_to, xof_bytes,
 };
 pub use crate::types::*;
 

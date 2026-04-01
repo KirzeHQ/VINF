@@ -242,3 +242,56 @@ pub fn xof_bytes(data: &[u8], out_len: usize) -> io::Result<Vec<u8>> {
   squeeze(&mut state, out_len, &rc, &mut out)?;
   Ok(out)
 }
+
+pub const LAYER_SIZES: [usize; 3] = [10, 10, 12];
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Layer {
+  X = 0,
+  Y = 1,
+  Z = 2,
+}
+
+impl Layer {
+  fn idx(self) -> usize {
+    match self {
+      Layer::X => 0,
+      Layer::Y => 1,
+      Layer::Z => 2,
+    }
+  }
+}
+
+fn layer_offsets() -> [usize; 4] {
+  let mut offs = [0usize; 4];
+  offs[0] = 0;
+  offs[1] = LAYER_SIZES[0];
+  offs[2] = LAYER_SIZES[0] + LAYER_SIZES[1];
+  offs[3] = LAYER_SIZES[0] + LAYER_SIZES[1] + LAYER_SIZES[2];
+  offs
+}
+
+pub fn get_layer_slice<'a>(hash: &'a [u8; NODE_DIGEST_BYTES], layer: Layer) -> &'a [u8] {
+  let offs = layer_offsets();
+  let start = offs[layer.idx()];
+  let end = offs[layer.idx() + 1];
+  &hash[start..end]
+}
+
+pub fn partial_layer_match(
+  a: &[u8; NODE_DIGEST_BYTES],
+  b: &[u8; NODE_DIGEST_BYTES],
+  layer: Layer,
+) -> bool {
+  get_layer_slice(a, layer) == get_layer_slice(b, layer)
+}
+
+pub fn partial_match_up_to(
+  a: &[u8; NODE_DIGEST_BYTES],
+  b: &[u8; NODE_DIGEST_BYTES],
+  layer: Layer,
+) -> bool {
+  let offs = layer_offsets();
+  let end = offs[layer.idx() + 1];
+  &a[..end] == &b[..end]
+}

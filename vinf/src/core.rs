@@ -57,10 +57,31 @@ impl Vinf {
 
     
     let candidates = self.find_partial_matches(&h);
-    self.last_candidates = candidates;
+    self.last_candidates = candidates.clone();
 
-    
-    Ok(Vec::new())
+    // Build a minimal VINF prototype blob:
+    // layout:
+    // 0..4   magic 'VINF'
+    // 4      version u8
+    // 5      flags u8
+    // 6..8   reserved u16
+    // 8..16  original length u64 le
+    // 16..48 per-file hash (32 bytes)
+    // 48..50 candidate_count u16 le
+    // 50..   candidate_count * 32 bytes candidate hashes
+    let mut out = Vec::new();
+    out.extend_from_slice(b"VINF");
+    out.push(1u8); // version
+    out.push(0u8); // flags
+    out.extend_from_slice(&0u16.to_le_bytes()); // reserved
+    out.extend_from_slice(&(data.len() as u64).to_le_bytes()); // original length
+    out.extend_from_slice(&h); // per-file hash
+    let count = candidates.len() as u16;
+    out.extend_from_slice(&count.to_le_bytes());
+    for c in &candidates {
+      out.extend_from_slice(c);
+    }
+    Ok(out)
   }
 
   pub fn decompress(&self, _vinf_bytes: &[u8]) -> Result<Vec<u8>, Error> {

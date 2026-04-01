@@ -25,8 +25,6 @@ mod tests {
     let enc = v.compress(data).expect("compress should succeed");
     let dec = v.decompress(&enc).expect("decompress should succeed");
 
-    // Prototype compressor emits a minimal VINF blob; decompressor still
-    // returns placeholder empty output.
     assert!(!enc.is_empty());
     assert_eq!(&enc[0..4], b"VINF");
     assert!(dec.is_empty());

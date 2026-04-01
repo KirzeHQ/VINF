@@ -243,6 +243,60 @@ pub fn xof_bytes(data: &[u8], out_len: usize) -> io::Result<Vec<u8>> {
   Ok(out)
 }
 
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
+
+pub const VHASH_MAGIC: &[u8; 5] = b"VHASH";
+
+pub fn write_vhash_file<P: AsRef<Path>>(
+  path: P,
+  file_hash: &[u8; NODE_DIGEST_BYTES],
+  candidates: &[[u8; NODE_DIGEST_BYTES]],
+) -> io::Result<()> {
+  let mut f = File::create(path)?;
+  f.write_all(VHASH_MAGIC)?;
+  f.write_all(&[1u8])?;
+  f.write_all(&[0u8])?;
+  let count = candidates.len() as u16;
+  f.write_all(&count.to_le_bytes())?;
+  f.write_all(file_hash)?;
+  for c in candidates {
+    f.write_all(c)?;
+  }
+  Ok(())
+}
+
+pub fn read_vhash_file<P: AsRef<Path>>(
+  path: P,
+) -> io::Result<([u8; NODE_DIGEST_BYTES], Vec<[u8; NODE_DIGEST_BYTES]>)> {
+  let mut f = File::open(path)?;
+  let mut magic = [0u8; 5];
+  f.read_exact(&mut magic)?;
+  if &magic != VHASH_MAGIC {
+    return Err(std::io::Error::new(
+      std::io::ErrorKind::InvalidData,
+      "invalid vhash magic",
+    ));
+  }
+  let mut version = [0u8; 1];
+  f.read_exact(&mut version)?;
+  let mut _flags = [0u8; 1];
+  f.read_exact(&mut _flags)?;
+  let mut count_b = [0u8; 2];
+  f.read_exact(&mut count_b)?;
+  let count = u16::from_le_bytes(count_b) as usize;
+  let mut file_hash = [0u8; NODE_DIGEST_BYTES];
+  f.read_exact(&mut file_hash)?;
+  let mut candidates = Vec::with_capacity(count);
+  for _ in 0..count {
+    let mut c = [0u8; NODE_DIGEST_BYTES];
+    f.read_exact(&mut c)?;
+    candidates.push(c);
+  }
+  Ok((file_hash, candidates))
+}
+
 pub const LAYER_SIZES: [usize; 3] = [10, 10, 12];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

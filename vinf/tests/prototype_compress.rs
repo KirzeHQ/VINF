@@ -4,7 +4,6 @@ use vinf::{Vinf, basic_hash};
 fn prototype_compress_emits_blob_and_candidates() -> Result<(), Box<dyn std::error::Error>> {
   let mut v = Vinf::new();
 
-  // no known hashes -> blob with zero candidates
   let out = v.compress(b"hello")?;
   assert!(out.len() >= 50);
   assert_eq!(&out[0..4], b"VINF");
@@ -16,13 +15,12 @@ fn prototype_compress_emits_blob_and_candidates() -> Result<(), Box<dyn std::err
   let count = u16::from_le_bytes(out[48..50].try_into().unwrap());
   assert_eq!(count, 0u16);
 
-  // register known hash and compress same data: candidate should show
   let known = basic_hash(b"hello");
   v.register_known_hash(known);
   let out2 = v.compress(b"hello")?;
   let count2 = u16::from_le_bytes(out2[48..50].try_into().unwrap());
   assert!(count2 >= 1);
-  let cand = &out2[50..50+32];
+  let cand = &out2[50..50 + 32];
   assert_eq!(cand, &known[..]);
 
   Ok(())

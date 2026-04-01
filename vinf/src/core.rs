@@ -6,6 +6,7 @@ pub struct Vinf {
   last_hash: Option<[u8; NODE_DIGEST_BYTES]>,
   known_hashes: Vec<[u8; NODE_DIGEST_BYTES]>,
   last_candidates: Vec<[u8; NODE_DIGEST_BYTES]>,
+  known_data: Vec<([u8; NODE_DIGEST_BYTES], Vec<u8>)>,
 }
 
 impl Default for Vinf {
@@ -20,6 +21,7 @@ impl Vinf {
       last_hash: None,
       known_hashes: Vec::new(),
       last_candidates: Vec::new(),
+      known_data: Vec::new(),
     }
   }
 
@@ -29,6 +31,13 @@ impl Vinf {
 
   pub fn register_known_hash(&mut self, h: [u8; NODE_DIGEST_BYTES]) {
     self.known_hashes.push(h);
+  }
+
+  pub fn register_known_data(&mut self, data: &[u8]) -> [u8; NODE_DIGEST_BYTES] {
+    let h = basic_hash(data);
+    self.known_hashes.push(h);
+    self.known_data.push((h, data.to_vec()));
+    h
   }
 
   pub fn last_candidates(&self) -> Vec<[u8; NODE_DIGEST_BYTES]> {
@@ -96,7 +105,41 @@ impl Vinf {
   }
 
   pub fn decompress(&self, _vinf_bytes: &[u8]) -> Result<Vec<u8>, Error> {
+    let vinf_bytes = _vinf_bytes;
+    if vinf_bytes.len() < 50 {
+      return Err(Error::InvalidFormat);
+    }
+    if &vinf_bytes[0..4] != b"VINF" {
+      return Err(Error::InvalidFormat);
+    }
+
+    let orig_len = u64::from_le_bytes(vinf_bytes[8..16].try_into().unwrap()) as usize;
+    let mut offset = 50usize;
+    let count = u16::from_le_bytes(vinf_bytes[48..50].try_into().unwrap()) as usize;
+    for _ in 0..count {
+      if vinf_bytes.len() < offset + NODE_DIGEST_BYTES {
+        return Err(Error::InvalidFormat);
+      }
+      let mut cand = [0u8; NODE_DIGEST_BYTES];
+      cand.copy_from_slice(&vinf_bytes[offset..offset + NODE_DIGEST_BYTES]);
+      offset += NODE_DIGEST_BYTES;
+      if let Some(data) = self.find_data_by_hash(&cand) {
+        let mut out = data.clone();
+        out.truncate(orig_len);
+        return Ok(out);
+      }
+    }
+
     Ok(Vec::new())
+  }
+
+  fn find_data_by_hash(&self, h: &[u8; NODE_DIGEST_BYTES]) -> Option<Vec<u8>> {
+    for (kh, data) in &self.known_data {
+      if kh == h {
+        return Some(data.clone());
+      }
+    }
+    None
   }
 }
 

@@ -6,7 +6,9 @@ pub mod types;
 
 pub use crate::core::{Vinf, compress, decompress};
 pub use crate::errors::Error;
-pub use crate::hash::{Graph as VinfGraph, NODE_DIGEST_BYTES, Node as VinfNode, build_vinf_hash};
+pub use crate::hash::{
+  Graph as VinfGraph, NODE_DIGEST_BYTES, Node as VinfNode, basic_hash, build_vinf_hash, xof_bytes,
+};
 pub use crate::types::*;
 
 pub const VINF_LIB_VERSION: &str = "0.1.0";

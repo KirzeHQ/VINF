@@ -225,3 +225,20 @@ pub fn build_vinf_hash(
 
   squeeze(&mut state, out_len, &rc, out)
 }
+
+pub fn basic_hash(data: &[u8]) -> [u8; NODE_DIGEST_BYTES] {
+  let rc = gen_round_constants();
+  h_node(data, &rc)
+}
+
+pub fn xof_bytes(data: &[u8], out_len: usize) -> io::Result<Vec<u8>> {
+  let rc = gen_round_constants();
+  let mut state = [0u64; 8];
+  let mut blob = Vec::new();
+  blob.extend_from_slice(&encode_u64_le(data.len() as u64));
+  blob.extend_from_slice(data);
+  absorb(&mut state, DOMAIN_FINAL, &blob, &rc);
+  let mut out = Vec::new();
+  squeeze(&mut state, out_len, &rc, &mut out)?;
+  Ok(out)
+}

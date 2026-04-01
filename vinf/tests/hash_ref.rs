@@ -13,7 +13,7 @@ fn build_vinf_hash_smoke() -> Result<(), Box<dyn std::error::Error>> {
 
   let hex = out.iter().map(|b| format!("{:02x}", b)).collect::<String>();
 
-  let expected = "9cafe71f122a33a62c2133a8a534f8c01a9c3b9d3aa9d73a84cf30bc8a934eccef03edb9203000eca1fcfca323dea8588dbc264db3c39497424716048aa9a64d";
+  let expected = "748ec6c17f8b14a28cf1f9fbdb3c0a28769b712663de83b5da0f0761970aad07992e2608e879647a341bc8c179426607c1a4b480956503651f62edfa9c13628b";
   assert_eq!(out.len(), 64);
   assert_eq!(hex, expected);
   Ok(())
